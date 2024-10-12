@@ -11,6 +11,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        deepNavy: '#0D0F1A',
         navy: '#161A30',
         purple: '#31304D',
         gray: '#B6BBC4',
