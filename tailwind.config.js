@@ -9,7 +9,14 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        navy: '#161A30',
+        purple: '#31304D',
+        gray: '#B6BBC4',
+        offWhite: '#F0ECE5',
+      },
+    },
   },
   plugins: [require("@tailwindcss/typography")],
 };
