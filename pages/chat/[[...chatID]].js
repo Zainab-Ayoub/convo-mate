@@ -4,28 +4,36 @@ import { useState } from "react";
 import { streamReader } from "openai-edge-stream";
 
 export default function ChatPage() {
+  const [ incomingMessage, setIncomingMessage ] = useState("");
   const [ messageText, setMessageText ] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("MESSAGE TEXT: ", messageText);
-    const response = await fetch(`/api/chat/sendMessage`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json", 
-      },
-      body: JSON.stringify({ message: messageText }),
-    });
-    const data = response.body;
-    if (!data) {
-      return;
+  
+    try {
+      const response = await fetch(`/api/chat/sendMessage`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: messageText }),
+      });
+  
+      if (!response.body) {
+        console.error("No response body found");
+        return;
+      }
+  
+      const reader = response.body.getReader();
+      await streamReader(reader, (message) => {
+        console.log("MESSAGE: ", message); // Log each part of the stream
+      });
+    } catch (error) {
+      console.error("Error while submitting message:", error); // Log errors
     }
-
-    const reader = data.getReader();
-    await streamReader(reader, (message) => {
-      console.log("MESSAGE: ", message);
-    });
   };
+  
 
   return (
     <>
@@ -35,7 +43,7 @@ export default function ChatPage() {
       <div className="grid h-screen grid-cols-[260px_1fr]">
         <ChatSidebar />
         <div className="flex flex-col bg-navy">
-          <div className="flex-1">chat window</div>
+          <div className="flex-1 text-offWhite">{incomingMessage</div>
           <footer className="bg-navy p-10">
             <form onSubmit={handleSubmit}>
               <fieldset className="flex gap-2">
