@@ -28,6 +28,7 @@ export default function ChatPage() {
       const reader = response.body.getReader();
       await streamReader(reader, (message) => {
         console.log("MESSAGE: ", message); // Log each part of the stream
+        setIncomingMessage(s => `${s}${message.content}`);
       });
     } catch (error) {
       console.error("Error while submitting message:", error); // Log errors
@@ -43,7 +44,7 @@ export default function ChatPage() {
       <div className="grid h-screen grid-cols-[260px_1fr]">
         <ChatSidebar />
         <div className="flex flex-col bg-navy">
-          <div className="flex-1 text-offWhite">{incomingMessage</div>
+          <div className="flex-1 text-offWhite">{incomingMessage}</div>
           <footer className="bg-navy p-10">
             <form onSubmit={handleSubmit}>
               <fieldset className="flex gap-2">
