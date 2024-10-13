@@ -24,7 +24,7 @@ export default function ChatPage() {
     const reader = data.getReader();
     await streamReader(reader, (message) => {
       console.log("MESSAGE: ", message);
-    })
+    });
   };
 
   return (
