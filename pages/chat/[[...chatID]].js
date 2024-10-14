@@ -25,7 +25,7 @@ export default function ChatPage() {
     return newChatMessages;
     });
     setMessageText("");
-    console.log("NEW CHAT: ", json);
+   // console.log("NEW CHAT: ", json);
     
     const response = await fetch(`/api/chat/sendMessage`, {
       method: "POST",
