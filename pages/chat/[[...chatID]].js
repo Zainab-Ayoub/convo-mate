@@ -9,9 +9,11 @@ export default function ChatPage() {
   const [ incomingMessage, setIncomingMessage ] = useState("");
   const [ messageText, setMessageText ] = useState("");
   const [ newChatMessages, setNewChatMessages ] = useState([]);
+  const [ generatingResponse, setGeneratingResponse ] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setGeneratingResponse(true);
     setNewChatMessages(prev => {
       const newChatMessages = [...prev, 
       {
