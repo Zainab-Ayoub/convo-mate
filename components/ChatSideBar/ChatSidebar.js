@@ -16,13 +16,16 @@ export const ChatSidebar = () => {
     }, [])
     return (
       <div className="flex flex-col overflow-hidden bg-deepNavy text-offWhite">
-        <Link href="/chat">New Chat</Link>
+        <Link href="/chat" className="side-menu-item">New Chat</Link>
         <div className="flex-1 overflow-auto bg-slate-500"> 
           {chatList.map((chat) => (
-            <Link key={chat._id} href={`/chat/${chat._id}`}>{chat.title}</Link>
+            <Link 
+              key={chat._id} 
+              href={`/chat/${chat._id}`
+              }>{chat.title}</Link>
           ))}
         </div>     
-        <Link href="/api/auth/logout">Logout</Link>     
+        <Link href="/api/auth/logout" className="side-menu-item">Logout</Link>     
       </div>
     )
 };

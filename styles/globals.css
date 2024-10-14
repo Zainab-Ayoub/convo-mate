@@ -6,4 +6,8 @@
     .btn {
         @apply rounded-md bg-purple px-4 py-2 text-offWhite hover:bg-darkPurple disabled:bg-gray;
     }
+
+    .side-menu-item {
+        
+    }
 }
