@@ -25,7 +25,7 @@ export default function ChatPage() {
     return newChatMessages;
     });
     setMessageText("");
-    
+
     const response = await fetch(`/api/chat/sendMessage`, {
       method: "POST",
       headers: {
@@ -53,8 +53,8 @@ export default function ChatPage() {
       </Head>
       <div className="grid h-screen grid-cols-[260px_1fr]">
         <ChatSidebar />
-        <div className="flex flex-col bg-navy">
-          <div className="flex-1 text-offWhite">
+        <div className="flex flex-col overflow-hidden bg-navy">
+          <div className="flex-1 overflow-scroll text-offWhite">
             {newChatMessages.map(message => {
               <Message 
                 key={message._id} 
