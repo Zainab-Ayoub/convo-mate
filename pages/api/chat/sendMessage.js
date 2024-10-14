@@ -13,7 +13,22 @@ export default async function handler(req) {
     const initialChatMessage = {
       role: "system ",
       content: "Your name is Convo Mate. An incredibly intelligent and quick-learning AI, that always replies with an enthusiastic and positive energy. You were created by WebDevEducation. Your response must be formatted as markdown.",
-    }
+    };
+
+    const response = await fetch (
+      `${req.headers.get("origin")}/api/chat/createNewChat`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        cookie: req.headers.get("cookie"), 
+      },
+      body: JSON.stringify({
+        message,
+      }),
+    });  
+    const json = await response.json();
+    const chatId = json._id;
+
     const stream = await OpenAIEdgeStream(
       "https://api.openai.com/v1/chat/completions",
       {
@@ -27,6 +42,10 @@ export default async function handler(req) {
           messages: [initialChatMessage, { content: message, role: "user" }],
           stream: true,
         }),
+      }, {
+        onAfterStream: async({fullContent}) => {
+
+        }
       }
     );
     return new Response(stream); 
