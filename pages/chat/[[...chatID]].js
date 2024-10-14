@@ -26,28 +26,23 @@ export default function ChatPage() {
     });
     console.log("MESSAGE TEXT: ", messageText);
   
-    try {
-      const response = await fetch(`/api/chat/sendMessage`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message: messageText }),
-      });
-  
-      if (!response.body) {
-        console.error("No response body found");
-        return;
-      }
-  
-      const reader = response.body.getReader();
-      await streamReader(reader, (message) => {
-        console.log("MESSAGE: ", message); // Log each part of the stream
-        setIncomingMessage(s => `${s}${message.content}`);
-      });
-    } catch (error) {
-      console.error("Error while submitting message:", error); // Log errors
+    const response = await fetch(`/api/chat/sendMessage`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message: messageText }),
+    });
+    const data = response.body;
+    if (!data) {
+      return;
     }
+    const reader = data.getReader();
+    await streamReader(reader, (message) => {
+      console.log("MESSAGE: ", message);
+      setIncomingMessage((s) => `${s}${message.content}`);
+    });
+    setGeneratingResponse(false);
   };
   
 
@@ -76,11 +71,11 @@ export default function ChatPage() {
           </div>
           <footer className="bg-navy p-10">
             <form onSubmit={handleSubmit}>
-              <fieldset className="flex gap-2">
+              <fieldset className="flex gap-2" disabled={generatingResponse}>
                 <textarea 
                   value={messageText}
                   onChange={(e) => setMessageText(e.target.value)}
-                  placeholder="Send a message..." 
+                  placeholder={generatingResponse ? "" : "Send a message..."}
                   className="w-full resize-none rounded-md bg-purple p-2 text-offWhite border-transparent focus:border-deepNavy focus:outline-none focus:ring-2 focus:ring-deepNavy" />
                 <button 
                   type="submit" 
