@@ -1,3 +1,5 @@
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useEffect } from "react";
 
@@ -13,10 +15,13 @@ export const ChatSidebar = () => {
         setChatList(json?.chats || [])
       };
       loadChatList();
-    }, [])
+    }, []);
+
     return (
       <div className="flex flex-col overflow-hidden bg-deepNavy text-offWhite">
-        <Link href="/chat" className="side-menu-item">New Chat</Link>
+        <Link href="/chat" className="side-menu-item">
+          <FontAwesomeIcon icon={faPlus}/> New Chat
+        </Link>
         <div className="flex-1 overflow-auto bg-slate-500"> 
           {chatList.map((chat) => (
             <Link 
