@@ -20,14 +20,16 @@ export const ChatSidebar = () => {
     return (
       <div className="flex flex-col overflow-hidden bg-deepNavy text-offWhite">
         <Link href="/chat" className="side-menu-item">
-          <FontAwesomeIcon icon={faPlus}/> New Chat
+          <FontAwesomeIcon icon={faPlus} /> New Chat
         </Link>
         <div className="flex-1 overflow-auto bg-slate-500"> 
           {chatList.map((chat) => (
             <Link 
               key={chat._id} 
-              href={`/chat/${chat._id}`
-              }>{chat.title}</Link>
+              href={`/chat/${chat._id}`}
+              className="side-menu-item"
+            >
+              <FontAwesomeIcon icon={faPlus} />  {chat.title}</Link>
           ))}
         </div>     
         <Link href="/api/auth/logout" className="side-menu-item">Logout</Link>     
