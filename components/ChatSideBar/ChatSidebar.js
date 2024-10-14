@@ -1,4 +1,4 @@
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faMessage, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useEffect } from "react";
@@ -19,7 +19,7 @@ export const ChatSidebar = () => {
 
     return (
       <div className="flex flex-col overflow-hidden bg-deepNavy text-offWhite">
-        <Link href="/chat" className="side-menu-item">
+        <Link href="/chat" className="side-menu-item" bg-purple hover:bg-darkPurple>
           <FontAwesomeIcon icon={faPlus} /> New Chat
         </Link>
         <div className="flex-1 overflow-auto bg-slate-500"> 
@@ -29,10 +29,14 @@ export const ChatSidebar = () => {
               href={`/chat/${chat._id}`}
               className="side-menu-item"
             >
-              <FontAwesomeIcon icon={faPlus} />  {chat.title}</Link>
+              <FontAwesomeIcon icon={faMessage} /> {chat.title}</Link>
           ))}
         </div>     
-        <Link href="/api/auth/logout" className="side-menu-item">Logout</Link>     
+        <Link 
+          href="/api/auth/logout" 
+          className="side-menu-item">
+          <FontAwesomeIcon icon={faRightFromBracket} /> Logout
+        </Link>     
       </div>
     )
 };
