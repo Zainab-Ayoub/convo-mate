@@ -7,6 +7,11 @@ export const config = {
 export default async function handler(req) {
   try {
     const { message } = await req.json();
+    console.log("MESSAGE: ", message);
+    const initialChatMessage = {
+      role: "system ",
+      content: "Your name is Convo Mate. An incredibly intelligent and quick-learning AI, that always replies with an enthusiastic and positive energy. You were created by WebDevEducation. Your response must be formatted as markdown.",
+    }
     const stream = await OpenAIEdgeStream(
       "https://api.openai.com/v1/chat/completions",
       {
@@ -17,12 +22,12 @@ export default async function handler(req) {
         method: "POST",
         body: JSON.stringify({
           model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: message }],
+          messages: [initialChatMessage, { content: message, role: "user" }],
           stream: true,
         }),
       }
     );
-    return new Response(stream); // Make sure to return the stream correctly
+    return new Response(stream); 
   } catch (e) {
     console.log("AN ERROR OCCURRED IN SENDMESSAGE: ", e);
     return new Response("Error in processing request", { status: 500 });
