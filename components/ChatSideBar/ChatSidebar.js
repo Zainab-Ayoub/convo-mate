@@ -27,7 +27,7 @@ export const ChatSidebar = ({ chatId }) => {
             <Link 
               key={chat._id} 
               href={`/chat/${chat._id}`}
-              className="side-menu-item"
+              className={`side-menu-item ${chatId === chat._id ? "bg-gray" : ""}`}
             >
               <FontAwesomeIcon icon={faMessage} /> {chat.title}</Link>
           ))}
