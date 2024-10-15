@@ -15,7 +15,7 @@ export const ChatSidebar = ({ chatId }) => {
         setChatList(json?.chats || [])
       };
       loadChatList();
-    }, []);
+    }, [chatId]);
 
     return (
       <div className="flex flex-col overflow-hidden bg-deepNavy text-offWhite">
