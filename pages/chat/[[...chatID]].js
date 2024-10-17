@@ -4,12 +4,22 @@ import { useState, useEffect } from "react";
 import { streamReader } from "openai-edge-stream";
 import { v4 as uuid } from "uuid";
 import { Message } from "components/message";
+import { useRouter } from "next/router";
 
-export default function ChatPage() {
+export default function ChatPage({ chatId }) {
+  const [ newChatId, setNewChatId ] = useState(null);
   const [ incomingMessage, setIncomingMessage ] = useState("");
   const [ messageText, setMessageText ] = useState("");
   const [ newChatMessages, setNewChatMessages ] = useState([]);
   const [ generatingResponse, setGeneratingResponse ] = useState(false);
+  const router = useRouter(); 
+
+  useEffect(() => {
+    if (!generatingResponse && newChatId) {
+      setNewChatId(null);
+      router.push(`/chat/${newChatId}`);
+    }
+  }, [newChatId, generatingResponse, router]);
 
   useEffect(() => {
     console.log("ChatPage rendered");
@@ -45,7 +55,11 @@ export default function ChatPage() {
     const reader = data.getReader();
     await streamReader(reader, (message) => {
       console.log("MESSAGE: ", message);
-      setIncomingMessage((s) => `${s}${message.content}`);
+      if (condition) {
+        setNewChatId(message.content);
+      } else {
+        setIncomingMessage((s) => `${s}${message.content}`); 
+      }
     });
     setGeneratingResponse(false);
   };
@@ -57,7 +71,7 @@ export default function ChatPage() {
         <title>New chat</title>
       </Head>
       <div className="grid h-screen grid-cols-[260px_1fr]">
-        <ChatSidebar />
+        <ChatSidebar chatId={chatId} />
         <div className="flex flex-col overflow-hidden bg-navy">
           <div className="flex-1 overflow-scroll text-offWhite">
             {newChatMessages.map(message => {
@@ -96,3 +110,12 @@ export default function ChatPage() {
     </>
   );
 }
+
+export const getServerSideProps = async (ctx) => {
+  const chatId = ctx.params?.chatId?.[0] || null;
+  return {
+    props: {
+      chatId,
+    },
+  };
+};
