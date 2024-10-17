@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { ChatSidebar } from "components/ChatSideBar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { streamReader } from "openai-edge-stream";
 import { v4 as uuid } from "uuid";
 import { Message } from "components/message";
@@ -10,6 +10,10 @@ export default function ChatPage() {
   const [ messageText, setMessageText ] = useState("");
   const [ newChatMessages, setNewChatMessages ] = useState([]);
   const [ generatingResponse, setGeneratingResponse ] = useState(false);
+
+  useEffect(() => {
+    console.log("ChatPage rendered");
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

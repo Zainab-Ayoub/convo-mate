@@ -1,1 +1,1 @@
-export { ChatSidebar } from "./ChatSideBar";
+export { ChatSidebar } from "./ChatSidebar";
