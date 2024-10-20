@@ -1,42 +1,66 @@
-import { faPlus, faMessage, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMessage,
+  faPlus,
+  faRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const ChatSidebar = ({ chatId }) => {
-    const [chatList, setChatList] = useState([]); 
-    useEffect(() => {
-      const loadChatList = async () => {
+  const [chatList, setChatList] = useState([]);
+
+  useEffect(() => {
+    const loadChatList = async () => {
+      try {
         const response = await fetch(`/api/chat/getChatList`, {
-          method: 'POST',
+          method: "POST",
         });
+        console.log("Response status:", response.status); // Debugging
+        if (!response.ok) {
+          throw new Error(`Network response was not ok: ${response.status}`);
+        }
         const json = await response.json();
         console.log("CHAT LIST: ", json);
-        setChatList(json?.chats || [])
-      };
-      loadChatList();
-    }, [chatId]);
+        setChatList(json?.chats || []);
+      } catch (error) {
+        console.error("Failed to load chat list:", error);
+      }
+    };
+    
+    loadChatList();
+  }, [chatId]);  
 
-    return (
-      <div className="flex flex-col overflow-hidden bg-deepNavy text-offWhite">
-        <Link href="/chat" className="side-menu-item bg-purple hover:bg-darkPurple">
-          <FontAwesomeIcon icon={faPlus} /> New Chat
-        </Link>
-        <div className="flex-1 overflow-auto bg-slate-500"> 
-          {chatList.map((chat) => (
-            <Link 
-              key={chat._id} 
-              href={`/chat/${chat._id}`}
-              className={`side-menu-item ${chatId === chat._id ? "bg-gray" : "hover: bg-gray"}`}
+  return (
+    <div className="flex flex-col overflow-hidden bg-gray-900 text-white">
+      <Link
+        href="/chat"
+        className="side-menu-item bg-emerald-500 hover:bg-emerald-600"
+      >
+        <FontAwesomeIcon icon={faPlus} /> New chat
+      </Link>
+      <div className="flex-1 overflow-auto bg-gray-950">
+        {chatList.map((chat) => (
+          <Link
+            key={chat._id}
+            href={`/chat/${chat._id}`}
+            className={`side-menu-item ${
+              chatId === chat._id ? "bg-gray-700 hover:bg-gray-700" : ""
+            }`}
+          >
+            <FontAwesomeIcon icon={faMessage} className="text-white/50" />{" "}
+            <span
+              title={chat.title}
+              className="overflow-hidden text-ellipsis whitespace-nowrap"
             >
-              <FontAwesomeIcon icon={faMessage} /> {chat.title}</Link>
-          ))}
-        </div>     
-        <Link 
-          href="/api/auth/logout" 
-          className="side-menu-item">
-          <FontAwesomeIcon icon={faRightFromBracket} /> Logout
-        </Link>     
+              {chat.title}
+            </span>
+          </Link>
+        ))}
       </div>
-    )
+      <Link href="/api/auth/logout" className="side-menu-item">
+        <FontAwesomeIcon icon={faRightFromBracket} /> Logout
+      </Link>
+    </div>
+  );
 };

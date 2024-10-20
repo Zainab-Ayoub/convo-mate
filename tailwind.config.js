@@ -1,4 +1,4 @@
-/** @type {import('tailwindcss').Config} */
+// @type {import('tailwindcss').Config} 
 module.exports = {
   content: [
     "./app/**/*.{js,ts,jsx,tsx}",
@@ -10,13 +10,8 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        deepNavy: '#0D0F1A',
-        navy: '#161A30',
-        purple: '#31304D',
-        gray: '#B6BBC4',
-        offWhite: '#F0ECE5',
-        darkPurple: '#2A2943'
+      fontFamily: {
+        body: "var(--font-outfit), sans-serif",
       },
     },
   },
